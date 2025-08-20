@@ -1,0 +1,10 @@
+{
+  "navigationFallback": { "rewrite": "/index.html" },
+  "routes": [
+    {
+      "route": "/api/*",
+      "rewrite": "https://flashcardapp.azurewebsites.net/api/{*}",
+      "allowedRoles": ["anonymous"]
+    }
+  ]
+}
