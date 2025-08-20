@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flash Cards</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; }
+      input, button { font-size: 1rem; padding: .5rem .75rem; }
+      .card { padding: 1rem; border: 1px solid #ddd; border-radius: .5rem; margin-top: 1rem; }
+      .ok { color: #2e7d32 } .err { color: #c62828 }
+    </style>
+  </head>
+  <body>
+    <h1>Flash Cards</h1>
+    <p>Simple static site wired to your Azure Functions API.</p>
+
+    <div class="card">
+      <button id="ping">Check API /api/health</button>
+      <p id="result"></p>
+    </div>
+
+    <script>
+      // We call /api/health and let Static Web Apps proxy it to your Function App.
+      document.getElementById('ping').onclick = async () => {
+        const out = document.getElementById('result');
+        out.textContent = 'Calling /api/health...';
+        try {
+          const res = await fetch('/api/health', { cache: 'no-store' });
+          const text = await res.text();
+          out.innerHTML = res.ok
+            ? `<span class="ok">OK:</span> ${text}`
+            : `<span class="err">${res.status} ${res.statusText}</span> ${text}`;
+        } catch (e) {
+          out.innerHTML = `<span class="err">Failed:</span> ${e.message}`;
+        }
+      };
+    </script>
+  </body>
+</html>
